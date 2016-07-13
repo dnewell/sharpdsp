@@ -1,2 +1,2 @@
 # sharpdsp
-DSP essentials for C#
+SharpDSP is an open source .NET Digital Signal Processing library written by David Newell (david@davidnewell.ca)
