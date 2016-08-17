@@ -21,6 +21,8 @@ namespace DSPUtilities
         /// Perform 1D convolution of two complex arrays.
         /// </summary>
         /// <param name="samples">array of audio samples (imaginary part will be zero)</param>
+        /// <param name="signalToConvolve1"></param>
+        /// <param name="signalToConvolve2"></param>
         /// <returns>the fourier transformation of the samples</returns>
         public static Complex[] Convolve(Complex[] signalToConvolve1, Complex[] signalToConvolve2)
         {
@@ -41,6 +43,8 @@ namespace DSPUtilities
         /// Perform 1D convolution of two complex arrays of dissimilar cardinality.
         /// </summary>
         /// <param name="samples">array of audio samples (imaginary parts will be zero)</param>
+        /// <param name="signalToConvolve1"></param>
+        /// <param name="signalToConvolve2"></param>
         /// <returns>the fourier transformation of the samples</returns>
         public static Complex[] ConvolveWithIR(Complex[] signalToConvolve1, Complex[] signalToConvolve2)
         {
@@ -85,7 +89,7 @@ namespace DSPUtilities
         /// </summary>
         /// <param name="complexArray">array of audio samples (imaginary parts will be zero)</param>
         /// <param name="numSamples">number of samples in longer file</param>
-        /// <returns>the fourier transformation of the samples</returns>
+        /// <returns>the Fourier transformation of the samples</returns>
         private static Complex[] DoIRFFT(Complex[] complexArray, int numSamples)
         {
             Complex[] resizedSampleArray = ResizeAndZeroPad(complexArray, numSamples);
