@@ -42,7 +42,7 @@ namespace DSPUtilities
         {
             if (complexArrayX.Length != complexArrayY.Length)
             {
-                Console.WriteLine("Warning: input files are not the same length. This may indicate problem with the input data.");
+                Console.WriteLine("Warning: input files are not the same length. This may indicate a problem with the input data.");
             }
 
             Complex[] result = new Complex[complexArrayX.Length];
@@ -54,7 +54,7 @@ namespace DSPUtilities
         }
 
         /// <summary>
-        /// Apply complex conjugate function across all members of the array
+        /// Compute the complex conjugate of each array entry
         /// </summary>
         /// <param name="complexArray">input array of complex numbers</param>
         /// <returns>array with complex conjugates of the input</returns>
@@ -67,11 +67,13 @@ namespace DSPUtilities
             }
             return result;
         }
+
+        /// TODO: Add error handling (incorrect path, incorrect filetype, etc.)
         /// <summary>
-        /// Returns the NAudio.Wave.WaveFormat of a file.
+        /// Reads a *.wav file and determines its format (using NAudio.Wave methods) 
         /// </summary>+
         /// <param name="path">the path to the file</param>
-        /// <returns>the WaveFormat of the File</returns>
+        /// <returns>NAudio WaveFormat object containing the format of the file located at a user specified path</returns>
         public static WaveFormat GetWaveFormat(string path)
         {
             WaveFileReader reader = new WaveFileReader(path);
@@ -79,26 +81,30 @@ namespace DSPUtilities
             reader.Dispose();
             return format;
         }
+
+        /// TODO: Audio data bit depth handling: remove 16 bit restriction, add handling of 24/32 bit PCM and IEEE float encoded files
         /// <summary>
-        /// Writes an array of complex numbers representing sample data to a wave file at the given path.
-        /// Only produces a sensible result with 16bit data. 
-        /// - note: for audio data, the imaginary component (Complex.imag) should be zero.
+        /// Writes an array of complex numbers representing sample data to a wave file.
+        /// Note: Assumes input array contains 16bit sample data (other bit depths will produce nonsensible results)
+        /// DevNote: after processing, the imaginary component of Complex[] - all values of Complex.imag - should be zero.
         /// </summary>
         /// <param name="complexArray">the array of complex numbers representing wave data</param>
-        /// <param name="path">the destination path in the file system</param>
-        /// <returns>true if the file was written to disk, false otherwise</returns>
-        public static bool WriteWaveToDisk(Complex[] complexArray, string path)
+        /// <param name="fileName">the destination path in the file system</param>
+        /// <returns>true if the file was written to disk, false otherwise (if write fails, refer to console output: exceptions are passed from WaveFileWriter</returns>
+
+        public static bool WriteWaveToDisk(Complex[] complexArray, string fileName)
         {
             int floatSampleCount = complexArray.Length;
             bool fileWritten;
             try
             {
-                WaveFileWriter writer = new WaveFileWriter(path, PCM16kHz16Bit);
+                WaveFileWriter writer = new WaveFileWriter(fileName, PCM16kHz16Bit);
                 for (int i = 0; i < floatSampleCount; i++)
                 {
                     writer.WriteSample((float)complexArray[i].Real);
                 }
                 fileWritten = true;
+                Console.Out.WriteLine("File written to " + System.);
                 writer.Dispose();
             } catch (Exception e)
             {
