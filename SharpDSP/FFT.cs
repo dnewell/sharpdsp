@@ -42,10 +42,9 @@ namespace DSPUtilities
         /// <summary>
         /// Perform 1D convolution of two complex arrays of dissimilar cardinality.
         /// </summary>
-        /// <param name="samples">array of audio samples (imaginary parts will be zero)</param>
         /// <param name="signalToConvolve1"></param>
         /// <param name="signalToConvolve2"></param>
-        /// <returns>the fourier transformation of the samples</returns>
+        /// <returns>the convolution of two </returns>
         public static Complex[] ConvolveWithIR(Complex[] signalToConvolve1, Complex[] signalToConvolve2)
         {
             // find the greater number of samples between the two input signals
@@ -59,9 +58,9 @@ namespace DSPUtilities
             Complex[] complexProductOfDfts = DSPUtilities.ElementWiseMultiply(dftOfInput1, dftOfInput2);
 
             // Perform inverse FFT on the complex product
-            Complex[] convolvedSignals = DoInverseFFT(complexProductOfDfts);
+            Complex[] convolution = DoInverseFFT(complexProductOfDfts);
 
-            return convolvedSignals;
+            return convolution;
         }
 
         /// <summary>
@@ -195,13 +194,16 @@ namespace DSPUtilities
             return result;
         }
 
+        /// TODO:
         /// <summary>
         /// Finds the relative offset in # of samples between two PCM/wav files
         /// </summary>
         /// <param name="memoryStreamX">A memory stream the emitted test signal PCM data</param>
         /// <param name="memoryStreamY">A memory stream of the PCM data of the captured result</param>
         /// <returns>The number of samples between the click in memoryStreamX and that of memoryStreamY</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static int FindSampleOffset(MemoryStream memoryStreamX, MemoryStream memoryStreamY)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             return 0;
         }
@@ -217,6 +219,7 @@ namespace DSPUtilities
             return (num > 0) & ((num & (num - 1)) == 0);
         }
 
+        /// TODO: handle 'targetSamples' or consider other approach
         /// <summary>
         /// Right-pad the array length with zeros to the first power of 2 which is either
         /// A) equal to or greater than twice the original array length (default behavior - 'targetSamples' set to 0), 
@@ -232,7 +235,7 @@ namespace DSPUtilities
         /// </summary>
         /// <param name="complexArray">the complex array to resize</param>
         /// <param name="targetSamples">minimum number of samples from which to size the padded array (0 == default behavior)</param>
-        /// <returns></returns>
+        /// <returns>Zero padded array</returns>
         private static Complex[] ResizeAndZeroPad(Complex[] complexArray, int targetSamples)
         {
             int paddedLength = NecessarySignificantBits(complexArray.Length)*2;

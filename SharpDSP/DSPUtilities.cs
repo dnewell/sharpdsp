@@ -8,7 +8,7 @@ namespace DSPUtilities
     public static class DSPUtilities
     {
         // TODO: Make an enum/consider other ways to handle this
-        private static WaveFormat PCM16kHz16Bit = WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, 16000, 1, 32000, 2, 16);
+        private static readonly WaveFormat PCM16kHz16Bit = WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, 16000, 1, 32000, 2, 16);
         /// <summary>
         /// Read all samples of a *.pcm/*.wav file into a complex number array 
         /// - note: for audio data, the imaginary (System.Numerics.Complex.Imag) component should be zero.
@@ -90,7 +90,7 @@ namespace DSPUtilities
         public static bool WriteWaveToDisk(Complex[] complexArray, string path)
         {
             int floatSampleCount = complexArray.Length;
-            bool fileWritten = false;
+            bool fileWritten;
             try
             {
                 WaveFileWriter writer = new WaveFileWriter(path, PCM16kHz16Bit);
